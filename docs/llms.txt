@@ -1,0 +1,18 @@
+# 1Password
+https://brightlane.github.io/1password
+
+## Pages
+- [Home](https://brightlane.github.io/1password/)
+- [Review](https://brightlane.github.io/1password/review.html)
+- [Compare](https://brightlane.github.io/1password/compare.html)
+
+## Focus
+- 1Password free trial
+- 1Password review
+- 1Password vs Bitwarden
+- password manager security
+
+## Notes
+- Static affiliate site
+- Daily content publishing
+- Fast navigation for search engines and AI systems
