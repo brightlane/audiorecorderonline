@@ -1,0 +1,60 @@
+name: Build and Deploy AudioRecorderOnline Site
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build site
+        run: python3 build.py
+
+      - name: Verify output
+        run: |
+          echo "=== Pages generated ==="
+          find audiorecorder-site -name "*.html" | sort
+          echo ""
+          echo "=== Total files: $(find audiorecorder-site -type f | wc -l) ==="
+          echo ""
+          echo "=== Language pages ==="
+          ls audiorecorder-site/lang/
+          echo ""
+          echo "=== Affiliate link ===" && grep -l "audiorecorderwebs" audiorecorder-site/index.html && echo "✓ OK"
+          echo "=== Site root ===" && grep -o '"/audiorecorderonline/' audiorecorder-site/index.html | head -1 && echo "✓ OK"
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./audiorecorder-site
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
